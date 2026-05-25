@@ -1,20 +1,17 @@
 import json
 import os
 import time
-from pathlib import Path
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+from .config import ENV_PATH, CHUNKS_DIR
 
-load_dotenv(Path(__file__).parent.parent.parent / ".env")
+load_dotenv(ENV_PATH)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
-
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-CHUNKS_DIR = PROJECT_ROOT / "data" / "chunks"
 
 
 def load_chunks(chunk_size: int = 200, overlap: int = 50):

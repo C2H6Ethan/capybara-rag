@@ -1,18 +1,14 @@
 import os
-import sys
 import json
-from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from .config import ENV_PATH
+from .rag import ask
 
-sys.path.append(str(Path(__file__).parent))
-
-load_dotenv(Path(__file__).parent.parent.parent / ".env")
-
-from rag import ask
+load_dotenv(ENV_PATH)
 
 app = FastAPI(title="CapybaraRAG API")
 
@@ -42,8 +38,8 @@ async def ask_question(request: AskRequest):
 
     async def generate():
         try:
-            from retriever import retrieve
-            from rag import build_prompt
+            from .retriever import retrieve
+            from .rag import build_prompt
 
             # Retrieve relevant chunks
             chunks = retrieve(request.question, top_k=request.top_k)
@@ -106,8 +102,8 @@ async def ask_question(request: AskRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "main:app",
+        "backend.src.main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True  # Auto-restart when you save changes
+        reload=True
     )

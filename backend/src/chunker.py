@@ -1,11 +1,8 @@
 import json
-from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import List
+from .config import FILTERED_DIR, CHUNKS_DIR
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-FILTERED_DIR = PROJECT_ROOT / "data" / "filtered"
-CHUNKS_DIR = PROJECT_ROOT / "data" / "chunks"
 CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
 

@@ -1,10 +1,10 @@
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from sqlalchemy import create_engine, text
+from .config import ENV_PATH
 
-load_dotenv(Path(__file__).parent.parent.parent / ".env")
+load_dotenv(ENV_PATH)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)

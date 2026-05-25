@@ -1,10 +1,10 @@
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 import anthropic
-from retriever import retrieve
+from .retriever import retrieve
+from .config import ENV_PATH
 
-load_dotenv(Path(__file__).parent.parent.parent / ".env")
+load_dotenv(ENV_PATH)
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
