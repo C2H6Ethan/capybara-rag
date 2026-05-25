@@ -39,6 +39,19 @@ def ask(query: str, top_k: int = 5, stream: bool = False) -> str:
     # Step 1: retrieve relevant chunks
     chunks = retrieve(query, top_k=top_k)
 
+    # If no chunks passed threshold, query is out of domain
+    if not chunks:
+        out_of_domain = {
+            "answer": "I don't have information about that in my capybara knowledge base. Try asking something about capybara biology, diet, habitat, behavior, or care.",
+            "sources": []
+        }
+        if stream:
+            # For streaming, yield the message as a single chunk
+            def _out_of_domain_generator():
+                yield out_of_domain["answer"]
+            return _out_of_domain_generator()
+        return out_of_domain
+
     # Step 2: build prompt with retrieved context
     prompt = build_prompt(query, chunks)
 
@@ -108,14 +121,17 @@ def ask_cli(query: str):
 
 
 if __name__ == "__main__":
-    questions = [
-        "What do capybaras eat?",
-        "How much does a capybara weigh?",
-        "How many capybaras should I keep together?",
-        "What animals prey on capybaras?",
-        "Do capybaras live in Antarctica?",
-    ]
-
-    for question in questions:
-        ask_cli(question)
+    print("CapybaraRAG CLI")
+    print("Type 'quit' to exit\n")
+    
+    while True:
+        query = input("Ask a capybara question: ").strip()
+        
+        if query.lower() in ('quit', 'exit', 'q'):
+            break
+            
+        if not query:
+            continue
+            
+        ask_cli(query)
         print("\n" + "=" * 60 + "\n")

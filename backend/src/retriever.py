@@ -15,7 +15,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 print("Model ready")
 
 
-def retrieve(query: str, top_k: int = 5) -> list:
+def retrieve(query: str, top_k: int = 5, distance_threshold: float = 0.45) -> list:
     # Step 1: embed the query
     query_embedding = model.encode(query).tolist()
 
@@ -48,6 +48,12 @@ def retrieve(query: str, top_k: int = 5) -> list:
                 "text": row.text,
                 "distance": round(float(row.distance), 4)
             })
+        
+        # Filter out chunks above distance threshold
+        # If best result is still above threshold, the query
+        # is likely outside our knowledge base entirely
+        if chunks and chunks[0]['distance'] > distance_threshold:
+            return []
 
     return chunks
 
