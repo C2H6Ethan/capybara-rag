@@ -8,6 +8,7 @@ import Compose from "@/components/Compose";
 
 export type Source = {
   source_file: string;
+  display_name: string;
   distance: number;
   text_preview: string;
 };

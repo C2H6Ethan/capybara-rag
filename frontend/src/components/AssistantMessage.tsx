@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Copy, RefreshCw, ThumbsUp } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Message } from "@/app/page";
 
 export default function AssistantMessage({ msg }: { msg: Message & { role: "capy" } }) {
@@ -14,14 +15,14 @@ export default function AssistantMessage({ msg }: { msg: Message & { role: "capy
       <div className="body">
         <div className="name">capy</div>
         <div className={`content${msg.streaming ? " typing-caret" : ""}`}>
-          {msg.text}
+          <ReactMarkdown>{msg.text}</ReactMarkdown>
         </div>
 
         {sources.length > 0 && !msg.streaming && (
           <div className="sources">
             {sources.map((s, i) => (
               <span key={i} className="source-chip">
-                {s.source_file.replace(".txt", "").replace(/_/g, " ")}
+                {s.display_name}
               </span>
             ))}
           </div>
