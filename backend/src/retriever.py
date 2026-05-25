@@ -15,7 +15,13 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 print("Model ready")
 
 
+_CAPY_TERMS = {"capybara", "capybaras", "hydrochoerus"}
+
 def retrieve(query: str, top_k: int = 5, distance_threshold: float = 0.45) -> list:
+    # Anchor vague queries to the topic so the embedding lands near capybara chunks
+    if not any(t in query.lower() for t in _CAPY_TERMS):
+        query = "capybara " + query
+
     # Step 1: embed the query
     query_embedding = model.encode(query).tolist()
 

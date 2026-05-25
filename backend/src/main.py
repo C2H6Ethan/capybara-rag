@@ -7,6 +7,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from .config import ENV_PATH
 from .rag import ask
+from .sources import get_display_name
 
 load_dotenv(ENV_PATH)
 
@@ -73,6 +74,7 @@ async def ask_question(request: AskRequest):
             sources = [
                 {
                     "source_file": c['source_file'],
+                    "display_name": get_display_name(c['source_file']),
                     "distance": c['distance'],
                     "text_preview": c['text'][:150]
                 }
