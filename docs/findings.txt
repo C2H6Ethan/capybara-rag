@@ -1,0 +1,6 @@
+Initial corpus analysis revealed that 7 of 12 source articles had fewer than 1 capybara mention per 1000 words. Indexing these without filtering would mean the majority of chunks contained zero relevant information. I implemented paragraph-level filtering to retain only chunks with direct capybara relevance, which improved retrieval precision significantly."
+
+
+After filtering non-capybara content, the Wikipedia-sourced corpus contained only ~4,755 words (~20-25 chunks). This is insufficient for meaningful retrieval evaluation. A RAG system with 20 chunks has no real search problem — you could fit everything in a single prompt. Target corpus size is 200-500 chunks, requiring dedicated capybara-focused sources rather than general Wikipedia articles about related topics.
+
+Final filtered corpus: 14,313 words across 17 files. Raw corpus was 27,229 words — filtering removed ~47% of content as non-capybara noise. Largest contributors: a-z-animals (3,740), capybara_main (2,137), thesprucepets (1,830), animaldiversity (1,441). Corpus covers biology, habitat, diet, behavior, reproduction, predators, conservation status, and care/husbandry.
