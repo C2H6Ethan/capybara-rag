@@ -13,3 +13,4 @@ frontend/out/
 frontend/.env*.local
 frontend/next-env.d.ts
 frontend/tsconfig.tsbuildinfo
+docker-compose.override.yml
