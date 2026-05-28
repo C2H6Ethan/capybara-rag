@@ -1,0 +1,19 @@
+name: Deploy to NAS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull latest code
+        run: |
+          cd /volume1/docker/dockge/stacks/capybara-rag
+          git pull origin main
+
+      - name: Rebuild and restart
+        run: |
+          cd /volume1/docker/dockge/stacks/capybara-rag
+          docker compose up -d --build
