@@ -15,9 +15,7 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
+    image: ghcr.io/c2h6ethan/capybara-rag-backend:latest
     env_file: .env
     environment:
       DATABASE_URL: postgresql://capybara:capybara123@db:5432/capybaradb
@@ -25,17 +23,26 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/c2h6ethan/capybara-rag-frontend:latest
     environment:
       BACKEND_URL: http://backend:8000
     ports:
       - "3000:3000"
     depends_on:
       - backend
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup --label-enable
     restart: unless-stopped
 
 volumes:
