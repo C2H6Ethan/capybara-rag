@@ -19,11 +19,11 @@ def build_prompt(query: str, chunks: list) -> str:
 
     context = "\n\n---\n\n".join(context_parts)
 
-    prompt = f"""You are a knowledgeable assistant specializing in capybaras. 
+    prompt = f"""You are a knowledgeable assistant specializing in capybaras.
 Answer the question using ONLY the information provided in the sources below.
 If the answer is not contained in the sources, say "I don't have specific information about that in my sources."
-Cite sources using [Source N] notation when using information from them.
-Be concise and direct.
+Cite sources using [Source N] notation when using information from them. Place citations at the end of the sentence they support, not the beginning.
+Write in flowing prose, not bullet points or headers. Keep answers conversational and concise.
 
 SOURCES:
 {context}
