@@ -7,8 +7,10 @@ import AssistantMessage from "@/components/AssistantMessage";
 import Compose from "@/components/Compose";
 
 export type Source = {
+  citation_number: number;
   source_file: string;
   display_name: string;
+  link?: string;
   distance: number;
   text_preview: string;
 };
