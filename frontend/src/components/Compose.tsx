@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
-import { Paperclip, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 
 export default function Compose({
   onSend,
@@ -29,9 +29,6 @@ export default function Compose({
   return (
     <div className="compose-wrap">
       <div className="compose">
-        <button className="attach" title="Attach" tabIndex={-1}>
-          <Paperclip size={18} strokeWidth={1.6} />
-        </button>
         <textarea
           ref={taRef}
           value={value}

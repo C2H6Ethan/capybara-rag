@@ -12,17 +12,14 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 def build_prompt(query: str, chunks: list) -> str:
     context_parts = []
     for i, chunk in enumerate(chunks):
-        source = chunk['source_file'].replace('.txt', '').replace('_', ' ')
-        context_parts.append(
-            f"[Source {i+1}: {source}]\n{chunk['text']}"
-        )
+        context_parts.append(f"[{i+1}]\n{chunk['text']}")
 
     context = "\n\n---\n\n".join(context_parts)
 
     prompt = f"""You are a knowledgeable assistant specializing in capybaras.
 Answer the question using ONLY the information provided in the sources below.
 If the answer is not contained in the sources, say "I don't have specific information about that in my sources."
-Cite sources using [Source N] notation when using information from them. Place citations at the end of the sentence they support, not the beginning.
+Cite sources using [N] notation when using information from them. Place citations at the end of the sentence they support, not the beginning.
 Write in flowing prose, not bullet points or headers. Keep answers conversational and concise.
 
 SOURCES:

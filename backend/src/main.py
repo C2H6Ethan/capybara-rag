@@ -1,4 +1,5 @@
 import os
+import re
 import json
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -7,7 +8,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from .config import ENV_PATH
 from .rag import ask
-from .sources import get_display_name
+from .sources import get_display_name, get_link
 
 load_dotenv(ENV_PATH)
 
@@ -64,23 +65,29 @@ async def ask_question(request: AskRequest):
             import anthropic
             client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
+            full_text = ""
             with client.messages.stream(
                 model="claude-haiku-4-5-20251001",
                 max_tokens=500,
                 messages=[{"role": "user", "content": prompt}]
             ) as stream:
                 for text in stream.text_stream:
+                    full_text += text
                     yield f"data: {json.dumps({'type': 'chunk', 'content': text})}\n\n"
 
-            # After answer is complete, send sources
+            # Only send sources that were actually cited in the answer
+            cited = {int(n) for n in re.findall(r'\[(\d+)\]', full_text)}
             sources = [
                 {
+                    "citation_number": i + 1,
                     "source_file": c['source_file'],
                     "display_name": get_display_name(c['source_file']),
+                    "link": get_link(c['source_file']),
                     "distance": c['distance'],
                     "text_preview": c['text'][:150]
                 }
-                for c in chunks
+                for i, c in enumerate(chunks)
+                if (i + 1) in cited
             ]
             yield f"data: {json.dumps({'type': 'sources', 'sources': sources})}\n\n"
 

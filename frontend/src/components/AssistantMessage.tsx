@@ -21,9 +21,15 @@ export default function AssistantMessage({ msg }: { msg: Message & { role: "capy
         {sources.length > 0 && !msg.streaming && (
           <div className="sources">
             {sources.map((s, i) => (
-              <span key={i} className="source-chip">
-                {s.display_name}
-              </span>
+              s.link ? (
+                <a key={i} className="source-chip" href={s.link} target="_blank" rel="noopener noreferrer">
+                  [{s.citation_number}] {s.display_name}
+                </a>
+              ) : (
+                <span key={i} className="source-chip">
+                  [{s.citation_number}] {s.display_name}
+                </span>
+              )
             ))}
           </div>
         )}
