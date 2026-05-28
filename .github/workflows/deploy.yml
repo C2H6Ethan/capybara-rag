@@ -29,7 +29,7 @@ jobs:
           context: .
           file: backend/Dockerfile
           push: true
-tags: ghcr.io/c2h6ethan/capybara-rag-backend:latest
+          tags: ghcr.io/c2h6ethan/capybara-rag-backend:latest
           cache-from: type=gha,scope=backend
           cache-to: type=gha,scope=backend,mode=max
 
@@ -57,6 +57,6 @@ tags: ghcr.io/c2h6ethan/capybara-rag-backend:latest
           context: ./frontend
           file: frontend/Dockerfile
           push: true
-tags: ghcr.io/c2h6ethan/capybara-rag-frontend:latest
+          tags: ghcr.io/c2h6ethan/capybara-rag-frontend:latest
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,scope=frontend,mode=max
